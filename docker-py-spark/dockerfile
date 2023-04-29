@@ -1,0 +1,31 @@
+FROM python:3.9-slim-bullseye
+
+# java
+RUN apt-get update && apt-get install -y openjdk-17-jdk
+
+
+# Determine the architecture of the system
+RUN ARCH="$(dpkg --print-architecture)" \
+    && case "${ARCH}" in \
+        amd64) \
+            export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 ; \
+            ;; \
+        arm64) \
+            export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-arm64 ; \
+            apt-get update && apt-get install -y gcc ; \
+            ;; \
+        *) \
+            echo "Unsupported architecture: ${ARCH}" ; \
+            exit 1 ; \
+            ;; \
+    esac
+
+ENV JAVA_HOME=${JAVA_HOME}
+
+# requirements
+COPY ./requirements.txt .
+RUN pip3 install -r ./requirements.txt
+
+WORKDIR /app/script
+
+CMD ["/bin/bash"]
