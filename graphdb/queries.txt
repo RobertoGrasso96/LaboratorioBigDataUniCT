@@ -1,0 +1,51 @@
+########################################## MOVIES ##########################################
+Cercare l'attore Tom Hanks:
+MATCH (tom {name: 'Tom Hanks'}) RETURN tom
+
+Cercare il film Cloud Atlas:
+MATCH (cloudAtlas {title: 'Cloud Atlas'}) RETURN cloudAtlas
+
+Cercare 10 persone:
+MATCH (p:Person) RETURN p.name LIMIT 10
+
+Cercare tutti i film usciti tra il 1990 e il 2000:
+MATCH (m:Movie) WHERE m.released >= 1990 AND m.released < 2000 RETURN m.title
+
+Cercare tutti i film in cui ha recitato Tom Hanks:
+MATCH (tom:Person {name: 'Tom Hanks'})-[:ACTED_IN]->(tomHanksMovies) RETURN tom,tomHanksMovies
+
+Cercare il regista di Cloud Atlas:
+MATCH (cloudAtlas {title: 'Cloud Atlas'})<-[:DIRECTED]-(directors) RETURN directors.name
+
+Cercare tutti gli attori che hanno recitato con Tom Hanks:
+MATCH (tom:Person {name:'Tom Hanks'})-[:ACTED_IN]->(m)<-[:ACTED_IN]-(coActors) RETURN coActors.name
+
+Trovare i film e gli attori che distano al massimo 4 hop da Kevin Bacon:
+MATCH (bacon:Person {name:'Kevin Bacon'})-[*1..4]-(hollywood) RETURN DISTINCT hollywood
+
+Trovare il percorso più breve tra Kevin Bacon e Meg Ryan:
+MATCH p=shortestPath((bacon:Person {name:'Kevin Bacon'})-[*]-(meg:Person {name:'Meg Ryan'})) RETURN p
+
+Cancellare tutti i gli, gli attori e gli archi:
+MATCH (n) DETACH DELETE n
+
+Verificare che il grafo sia vuoto:
+MATCH (n) RETURN n
+############################################################################################
+
+######################################## NORTHWIND #########################################
+Categorie dei prodotti di ogni fornitore:
+MATCH (s:Supplier)-[]->(:Product)-[]->(c:Category)
+RETURN s.companyName as Company, collect(distinct c.categoryName) as Categories
+
+Fornitori per ciascun prodotto:
+MATCH (c:Category {categoryName:"Produce"})<-[]-(:Product)<-[]-(s:Supplier)
+RETURN DISTINCT s.companyName as ProduceSuppliers
+
+
+
+
+
+############################################################################################
+
+

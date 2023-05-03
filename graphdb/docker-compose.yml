@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  neo4j-service:
+    platform: linux/amd64
+    build:
+      context: ./neo4j
+      dockerfile: dockerfile
+    image: neo4j-test
+    container_name: neo4j-container
+    tty: true
+    volumes:
+      - ./examples:/var/lib/neo4j/import/examples
+    ports: 
+      - 7687:7687 
+      - 7474:7474
+    environment:
+      - NEO4J_AUTH=neo4j/password
