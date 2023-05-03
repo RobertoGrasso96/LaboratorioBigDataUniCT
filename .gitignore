@@ -1,6 +1,7 @@
 # Custom
 data/file3_mod.csv
 data/file4.csv
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
